@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.panosen</groupId>
+    <artifactId>panosen-orm-mysql</artifactId>
+    <version>0.1.0</version>
+
+    <parent>
+        <groupId>com.panosen</groupId>
+        <artifactId>super-pom</artifactId>
+        <version>1.2.0</version>
+    </parent>
+
+    <name>Panosen CodeDom</name>
+    <packaging>jar</packaging>
+    <url>https://github.com/panosen/panosen-x-orm-mysql</url>
+    <description>Panosen ORM for Mysql.</description>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/panosen/panosen-x-orm-mysql/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.panosen</groupId>
+                <artifactId>super-version</artifactId>
+                <version>1.5.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.212</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.panosen/panosen-codedom-mysql -->
+        <dependency>
+            <groupId>com.panosen</groupId>
+            <artifactId>panosen-codedom-mysql</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>
