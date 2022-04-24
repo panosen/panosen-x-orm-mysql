@@ -11,9 +11,15 @@ public class EntityManagerFactory {
             return managers.get(clazz);
         }
 
-        EntityManager manager = new EntityManager(clazz);
-        EntityManager previous = managers.putIfAbsent(clazz, manager);
+        synchronized (EntityManagerFactory.class) {
+            if (managers.containsKey(clazz)) {
+                return managers.get(clazz);
+            }
 
-        return previous != null ? previous : manager;
+            EntityManager manager = new EntityManager(clazz);
+            EntityManager previous = managers.putIfAbsent(clazz, manager);
+
+            return previous != null ? previous : manager;
+        }
     }
 }

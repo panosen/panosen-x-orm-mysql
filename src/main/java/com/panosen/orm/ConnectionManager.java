@@ -1,7 +1,6 @@
 package com.panosen.orm;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
-
+import javax.sql.DataSource;
 import java.sql.Connection;
 
 public class ConnectionManager {

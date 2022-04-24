@@ -1,19 +1,23 @@
-package com.panosen.orm;
+package com.panosen.orm.tasks;
 
 import com.panosen.codedom.mysql.builder.SelectSqlBuilder;
 import com.panosen.codedom.mysql.builder.WhereBuilder;
+import com.panosen.orm.EntityColumn;
+import com.panosen.orm.EntityManager;
 
+import java.io.IOException;
 import java.util.Map;
 
-public class SelectHelper {
+public abstract class SelectTask extends SingleTask {
 
-    private final EntityManager entityManager;
+    protected final EntityManager entityManager;
 
-    public SelectHelper(EntityManager entityManager) {
+    public SelectTask(EntityManager entityManager) throws IOException {
+        super(entityManager);
         this.entityManager = entityManager;
     }
 
-    public <TEntity> SelectSqlBuilder buildSelectSqlBuilder(TEntity entity) throws IllegalAccessException {
+    protected  <TEntity> SelectSqlBuilder buildSelectSqlBuilder(TEntity entity) throws IllegalAccessException {
         SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
                 .from(entityManager.getTableName());
 

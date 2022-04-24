@@ -24,6 +24,9 @@ public class PropertiesLoader {
     public Properties loadDataSourceProperties() throws IOException {
         String fileName = "/datasources/datasource.properties";
         InputStream inputStream = this.getClass().getResourceAsStream(fileName);
+        if (inputStream == null) {
+            return new Properties();
+        }
         Properties properties = new Properties();
         properties.load(inputStream);
         return properties;

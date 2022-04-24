@@ -3,8 +3,8 @@ package com.panosen.orm;
 import com.panosen.codedom.mysql.Parameters;
 import com.panosen.orm.execute.*;
 import com.panosen.orm.extractor.Extractor;
-import org.apache.tomcat.jdbc.pool.DataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 
 public class DalClient {
