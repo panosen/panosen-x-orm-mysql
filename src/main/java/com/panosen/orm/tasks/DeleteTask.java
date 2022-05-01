@@ -2,15 +2,12 @@ package com.panosen.orm.tasks;
 
 import com.panosen.codedom.mysql.Parameters;
 import com.panosen.codedom.mysql.builder.DeleteSqlBuilder;
-import com.panosen.codedom.mysql.builder.WhereBuilder;
 import com.panosen.codedom.mysql.engine.DeleteSqlEngine;
 import com.panosen.codedom.mysql.engine.GenerationResponse;
 import com.panosen.orm.EntityColumn;
 import com.panosen.orm.EntityManager;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public class DeleteTask extends SingleTask {
 
@@ -19,21 +16,22 @@ public class DeleteTask extends SingleTask {
     }
 
     public <TEntity> int execute(TEntity entity) throws Exception {
+
+        EntityColumn primaryKeyColumn = entityManager.getPrimaryKeyColumn();
+        if (primaryKeyColumn == null) {
+            return 0;
+        }
+
+        Object value = primaryKeyColumn.getField().get(entity);
+        if (value == null) {
+            return 0;
+        }
+
         DeleteSqlBuilder updateSqlBuilder = new DeleteSqlBuilder()
                 .from(entityManager.getTableName());
 
-        List<String> primaryKeyList = entityManager.getPrimaryKeyList();
-
-        WhereBuilder whereBuilder = updateSqlBuilder.where();
-        for (Map.Entry<String, EntityColumn> entry : entityManager.getColumnMap().entrySet()) {
-            Object value = entry.getValue().getField().get(entity);
-            if (value == null) {
-                continue;
-            }
-            if (primaryKeyList.contains(entry.getKey())) {
-                whereBuilder.equal(entry.getKey(), entry.getValue().getType(), value);
-            }
-        }
+        updateSqlBuilder.where()
+                .equal(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), value);
 
         GenerationResponse generationResponse = new DeleteSqlEngine().generate(updateSqlBuilder);
         String sql = generationResponse.getSql();

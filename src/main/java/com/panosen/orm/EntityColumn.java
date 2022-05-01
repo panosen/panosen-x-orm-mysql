@@ -4,9 +4,19 @@ import java.lang.reflect.Field;
 
 public class EntityColumn {
 
+    private String columnName;
+
     private int type;
 
     private Field field;
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
 
     public int getType() {
         return type;

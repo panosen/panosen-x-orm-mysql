@@ -10,7 +10,6 @@ import com.panosen.orm.EntityColumn;
 import com.panosen.orm.EntityManager;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class UpdateTask extends SingleTask {
@@ -20,10 +19,19 @@ public class UpdateTask extends SingleTask {
     }
 
     public <TEntity> int execute(TEntity entity) throws Exception {
+
+        EntityColumn primaryKeyColumn = entityManager.getPrimaryKeyColumn();
+        if (primaryKeyColumn == null) {
+            return 0;
+        }
+
+        Object primaryKeyValue = primaryKeyColumn.getField().get(entity);
+        if (primaryKeyValue == null) {
+            return 0;
+        }
+
         UpdateSqlBuilder updateSqlBuilder = new UpdateSqlBuilder()
                 .table(entityManager.getTableName());
-
-        List<String> primaryKeyList = entityManager.getPrimaryKeyList();
 
         StatementsBuilder setBuilder = updateSqlBuilder.set();
         WhereBuilder whereBuilder = updateSqlBuilder.where();
@@ -32,7 +40,7 @@ public class UpdateTask extends SingleTask {
             if (value == null) {
                 continue;
             }
-            if (primaryKeyList.contains(entry.getKey())) {
+            if (primaryKeyColumn.getColumnName().contains(entry.getKey())) {
                 whereBuilder.equal(entry.getKey(), entry.getValue().getType(), value);
             } else {
                 setBuilder.set(entry.getKey(), entry.getValue().getType(), value);

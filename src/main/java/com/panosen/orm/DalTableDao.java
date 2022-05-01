@@ -16,6 +16,8 @@ public class DalTableDao<TEntity> {
     private final BatchInsertTask batchInsertTask;
     private final SelectListTask selectListTask;
     private final SelectSingleTask selectSingleTask;
+    private final SelectSingleByIdTask selectSingleByIdTask;
+    private final SelectListByIdsTask selectListByIdsTask;
 
     public DalTableDao(Class<? extends TEntity> clazz) throws IOException {
         this.entityManager = EntityManagerFactory.getOrCreateManager(clazz);
@@ -26,6 +28,8 @@ public class DalTableDao<TEntity> {
         this.batchInsertTask = new BatchInsertTask(entityManager);
         this.selectListTask = new SelectListTask(entityManager);
         this.selectSingleTask = new SelectSingleTask(entityManager);
+        this.selectSingleByIdTask = new SelectSingleByIdTask(entityManager);
+        this.selectListByIdsTask = new SelectListByIdsTask(entityManager);
     }
 
     public int insert(TEntity entity) throws Exception {
@@ -85,5 +89,13 @@ public class DalTableDao<TEntity> {
     public TEntity selectSingle(SelectSqlBuilder selectSqlBuilder) throws Exception {
         selectSqlBuilder.from(entityManager.getTableName());
         return this.selectSingleTask.selectSingle(selectSqlBuilder);
+    }
+
+    public TEntity selectSingleById(Object id) throws Exception {
+        return selectSingleByIdTask.selectSingleById(id);
+    }
+
+    public List<TEntity> selectListByIds(List<Object> ids) throws Exception {
+        return selectListByIdsTask.selectListByIds(ids);
     }
 }

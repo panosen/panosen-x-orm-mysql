@@ -1,11 +1,9 @@
 package com.panosen.orm;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.panosen.orm.annonation.*;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Map;
 
 public class EntityManager {
@@ -14,7 +12,7 @@ public class EntityManager {
     private final String dataSourceName;
     private final String tableName;
     private final Map<String, EntityColumn> columnMap;
-    private final List<String> primaryKeyList;
+    private final EntityColumn primaryKeyColumn;
 
     public EntityManager(Class<?> clazz) {
         this.clazz = clazz;
@@ -27,7 +25,7 @@ public class EntityManager {
 
         this.columnMap = buildFieldMap(clazz);
 
-        this.primaryKeyList = buildPrimaryKeyList(clazz);
+        this.primaryKeyColumn = buildPrimaryKey(clazz);
     }
 
     private static <TEntity> Map<String, EntityColumn> buildFieldMap(Class<TEntity> clazz) {
@@ -50,6 +48,7 @@ public class EntityManager {
                 field.setAccessible(true);
 
                 EntityColumn entityColumn = new EntityColumn();
+                entityColumn.setColumnName(column.name());
                 entityColumn.setType(type.type());
                 entityColumn.setField(field);
                 columnNames.putIfAbsent(column.name(), entityColumn);
@@ -61,8 +60,7 @@ public class EntityManager {
         return columnNames;
     }
 
-    private static <TEntity> List<String> buildPrimaryKeyList(Class<TEntity> clazz) {
-        List<String> primaryKeyList = Lists.newArrayList();
+    private static <TEntity> EntityColumn buildPrimaryKey(Class<TEntity> clazz) {
         Class<?> currentClass = clazz;
         while (currentClass != null) {
 
@@ -78,13 +76,25 @@ public class EntityManager {
                     continue;
                 }
 
-                primaryKeyList.add(column.name());
+                Type type = field.getAnnotation(Type.class);
+                if (type == null) {
+                    continue;
+                }
+
+                field.setAccessible(true);
+
+                EntityColumn entityColumn = new EntityColumn();
+                entityColumn.setColumnName(column.name());
+                entityColumn.setField(field);
+                entityColumn.setType(type.type());
+
+                return entityColumn;
             }
 
             currentClass = currentClass.getSuperclass();
         }
 
-        return primaryKeyList;
+        return null;
     }
 
     // region getters
@@ -101,8 +111,8 @@ public class EntityManager {
         return columnMap;
     }
 
-    public List<String> getPrimaryKeyList() {
-        return primaryKeyList;
+    public EntityColumn getPrimaryKeyColumn() {
+        return primaryKeyColumn ;
     }
 
     // endregion
