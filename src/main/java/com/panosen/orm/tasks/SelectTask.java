@@ -17,9 +17,13 @@ public abstract class SelectTask extends SingleTask {
         this.entityManager = entityManager;
     }
 
-    protected  <TEntity> SelectSqlBuilder buildSelectSqlBuilder(TEntity entity) throws IllegalAccessException {
+    protected <TEntity> SelectSqlBuilder buildSelectSqlBuilder(TEntity entity) throws IllegalAccessException {
         SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
                 .from(entityManager.getTableName());
+
+        if (entity == null) {
+            return selectSqlBuilder;
+        }
 
         WhereBuilder whereBuilder = selectSqlBuilder.where();
         for (Map.Entry<String, EntityColumn> entry : entityManager.getColumnMap().entrySet()) {

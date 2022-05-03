@@ -8,10 +8,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class DalTableDaoTest {
+public class DalTableDao_crud {
     private final StudentRepository studentRepository = new StudentRepository();
 
-    public DalTableDaoTest() throws IOException {
+    public DalTableDao_crud() throws IOException {
     }
 
     @Test

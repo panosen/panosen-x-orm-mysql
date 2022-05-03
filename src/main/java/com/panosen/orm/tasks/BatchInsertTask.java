@@ -1,7 +1,11 @@
 package com.panosen.orm.tasks;
 
+import com.panosen.codedom.mysql.Batch;
 import com.panosen.codedom.mysql.Parameters;
+import com.panosen.codedom.mysql.builder.BatchBuilder;
+import com.panosen.codedom.mysql.builder.BatchInsertSqlBuilder;
 import com.panosen.codedom.mysql.builder.InsertSqlBuilder;
+import com.panosen.codedom.mysql.engine.BatchInsertSqlEngine;
 import com.panosen.codedom.mysql.engine.GenerationResponse;
 import com.panosen.codedom.mysql.engine.InsertSqlEngine;
 import com.panosen.orm.EntityColumn;
@@ -18,25 +22,28 @@ public class BatchInsertTask extends SingleTask {
         super(entityManager);
     }
 
-    public <TEntity> int execute(List<TEntity> entityList) throws Exception {
-        return execute(entityList, null);
+    public <TEntity> int batchInsert(List<TEntity> entityList) throws Exception {
+        return batchInsert(entityList, null);
     }
 
-    public <TEntity> int execute(List<TEntity> entityList, KeyHolder keyHolder) throws Exception {
-        InsertSqlBuilder insertSqlBuilder = new InsertSqlBuilder()
+    public <TEntity> int batchInsert(List<TEntity> entityList, KeyHolder keyHolder) throws Exception {
+        BatchInsertSqlBuilder batchInsertSqlBuilder = new BatchInsertSqlBuilder()
                 .intoTable(entityManager.getTableName());
 
         for (TEntity entity : entityList) {
+            BatchBuilder batch = batchInsertSqlBuilder.addBatch();
+
             for (Map.Entry<String, EntityColumn> entry : entityManager.getColumnMap().entrySet()) {
-                Object value = entry.getValue().getField().get(entityList);
+                Object value = entry.getValue().getField().get(entity);
                 if (value == null) {
                     continue;
                 }
-                insertSqlBuilder.value(entry.getKey(), entry.getValue().getType(), value);
+                batchInsertSqlBuilder.addColumn(entry.getKey(), entry.getValue().getType());
+                batch.value(entry.getKey(), value);
             }
         }
 
-        GenerationResponse generationResponse = new InsertSqlEngine().generate(insertSqlBuilder);
+        GenerationResponse generationResponse = new BatchInsertSqlEngine().generate(batchInsertSqlBuilder);
         String sql = generationResponse.getSql();
         logger.info("sql = " + sql);
 

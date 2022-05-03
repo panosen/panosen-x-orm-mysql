@@ -1,5 +1,6 @@
 package com.panosen.orm.tasks;
 
+import com.google.common.collect.Lists;
 import com.panosen.codedom.mysql.builder.SelectSqlBuilder;
 import com.panosen.orm.EntityColumn;
 import com.panosen.orm.EntityManager;
@@ -12,7 +13,7 @@ public class SelectListByIdsTask extends SelectListTask {
         super(entityManager);
     }
 
-    public <TEntity> List<TEntity> selectListByIds(List<Object> ids) throws Exception {
+    public <T, TEntity> List<TEntity> selectListByIds(List<T> ids) throws Exception {
         SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
                 .from(entityManager.getTableName());
 
@@ -22,7 +23,7 @@ public class SelectListByIdsTask extends SelectListTask {
         }
 
         selectSqlBuilder.where()
-                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), ids);
+                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), Lists.newArrayList(ids));
 
         return selectList(selectSqlBuilder);
     }

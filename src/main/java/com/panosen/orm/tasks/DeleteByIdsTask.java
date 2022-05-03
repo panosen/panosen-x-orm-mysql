@@ -1,5 +1,6 @@
 package com.panosen.orm.tasks;
 
+import com.google.common.collect.Lists;
 import com.panosen.codedom.mysql.Parameters;
 import com.panosen.codedom.mysql.builder.DeleteSqlBuilder;
 import com.panosen.codedom.mysql.engine.DeleteSqlEngine;
@@ -8,30 +9,24 @@ import com.panosen.orm.EntityColumn;
 import com.panosen.orm.EntityManager;
 
 import java.io.IOException;
+import java.util.List;
 
-public class DeleteTask extends SingleTask {
-
-    public DeleteTask(EntityManager entityManager) throws IOException {
+public class DeleteByIdsTask extends SingleTask {
+    public DeleteByIdsTask(EntityManager entityManager) throws IOException {
         super(entityManager);
     }
 
-    public <TEntity> int execute(TEntity entity) throws Exception {
+    public <TId> int deleteByIds(List<TId> ids) throws Exception {
+        DeleteSqlBuilder deleteSqlBuilder = new DeleteSqlBuilder()
+                .from(entityManager.getTableName());
 
         EntityColumn primaryKeyColumn = entityManager.getPrimaryKeyColumn();
         if (primaryKeyColumn == null) {
             return 0;
         }
 
-        Object value = primaryKeyColumn.getField().get(entity);
-        if (value == null) {
-            return 0;
-        }
-
-        DeleteSqlBuilder deleteSqlBuilder = new DeleteSqlBuilder()
-                .from(entityManager.getTableName());
-
         deleteSqlBuilder.where()
-                .equal(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), value);
+                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), Lists.newArrayList(ids));
 
         GenerationResponse generationResponse = new DeleteSqlEngine().generate(deleteSqlBuilder);
         String sql = generationResponse.getSql();

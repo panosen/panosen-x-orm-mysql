@@ -18,6 +18,7 @@ public class DalTableDao<TEntity> {
     private final SelectSingleTask selectSingleTask;
     private final SelectSingleByIdTask selectSingleByIdTask;
     private final SelectListByIdsTask selectListByIdsTask;
+    private final DeleteByIdsTask deleteByIdsTask;
 
     public DalTableDao(Class<? extends TEntity> clazz) throws IOException {
         this.entityManager = EntityManagerFactory.getOrCreateManager(clazz);
@@ -30,6 +31,7 @@ public class DalTableDao<TEntity> {
         this.selectSingleTask = new SelectSingleTask(entityManager);
         this.selectSingleByIdTask = new SelectSingleByIdTask(entityManager);
         this.selectListByIdsTask = new SelectListByIdsTask(entityManager);
+        this.deleteByIdsTask = new DeleteByIdsTask(entityManager);
     }
 
     public int insert(TEntity entity) throws Exception {
@@ -49,11 +51,11 @@ public class DalTableDao<TEntity> {
     }
 
     public int batchInsert(List<TEntity> entityList) throws Exception {
-        return this.batchInsertTask.execute(entityList);
+        return this.batchInsertTask.batchInsert(entityList);
     }
 
     public int batchInsert(List<TEntity> entityList, KeyHolder keyHolder) throws Exception {
-        return this.batchInsertTask.execute(entityList, keyHolder);
+        return this.batchInsertTask.batchInsert(entityList, keyHolder);
     }
 
     //TODO add Transaction
@@ -77,6 +79,10 @@ public class DalTableDao<TEntity> {
         return this.selectListTask.selectList(entity);
     }
 
+    public List<TEntity> selectListByPage(TEntity entity, Integer pageIndex, Integer pageSize) throws Exception {
+        return this.selectListTask.selectListByPage(entity, pageIndex, pageSize);
+    }
+
     public List<TEntity> selectList(SelectSqlBuilder selectSqlBuilder) throws Exception {
         selectSqlBuilder.from(entityManager.getTableName());
         return this.selectListTask.selectList(selectSqlBuilder);
@@ -95,7 +101,11 @@ public class DalTableDao<TEntity> {
         return selectSingleByIdTask.selectSingleById(id);
     }
 
-    public List<TEntity> selectListByIds(List<Object> ids) throws Exception {
+    public <TId> List<TEntity> selectListByIds(List<TId> ids) throws Exception {
         return selectListByIdsTask.selectListByIds(ids);
+    }
+
+    public <TId> int deleteByIds(List<TId> ids) throws Exception {
+        return deleteByIdsTask.deleteByIds(ids);
     }
 }

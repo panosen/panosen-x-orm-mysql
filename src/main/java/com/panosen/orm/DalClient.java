@@ -15,7 +15,7 @@ public class DalClient {
         connManager = new ConnectionManager(dataSource);
     }
 
-    public <T> T query(String sql, Parameters parameters, Extractor<T> extractor)
+    public <TEntity> TEntity query(String sql, Parameters parameters, Extractor<TEntity> extractor)
             throws Exception {
         return doInConnection(new ExecuteQuery<>(sql, parameters, extractor));
     }

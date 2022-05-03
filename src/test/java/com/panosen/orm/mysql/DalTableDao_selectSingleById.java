@@ -8,10 +8,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class DalTableDaoTest2 {
+public class DalTableDao_selectSingleById {
     private final StudentRepository studentRepository = new StudentRepository();
 
-    public DalTableDaoTest2() throws IOException {
+    public DalTableDao_selectSingleById() throws IOException {
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DalTableDaoTest2 {
             id = keyHolder.getPrimaryKey().intValue();
         }
 
-        //selectById
+        //selectSingleById
         {
             StudentEntity actual = studentRepository.selectSingleById(id);
 

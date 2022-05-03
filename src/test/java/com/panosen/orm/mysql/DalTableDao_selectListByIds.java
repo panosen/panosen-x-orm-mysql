@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DalTableDaoTest3 {
+public class DalTableDao_selectListByIds {
     private final StudentRepository studentRepository = new StudentRepository();
 
-    public DalTableDaoTest3() throws IOException {
+    public DalTableDao_selectListByIds() throws IOException {
     }
 
     @Test
@@ -43,20 +43,24 @@ public class DalTableDaoTest3 {
 
         //selectListByIds
         {
-            List<StudentEntity> actual = studentRepository.selectListByIds(null);
+            List<StudentEntity> actual = studentRepository.selectListByIds(ids);
+
+            Assert.assertNotNull(actual);
+            Assert.assertEquals(3, actual.size());
         }
 
         //delete
-//        {
-//            int count = studentRepository.batchDelete(null);
-//            Assert.assertEquals(1, count);
-//        }
+        {
+            int count = studentRepository.deleteByIds(ids);
+            Assert.assertEquals(3, count);
+        }
 
-        //selectSingle
-//        {
-//            StudentEntity actual = studentRepository.selectSingle(null);
-//
-//            Assert.assertNull(actual);
-//        }
+        //selectListByIds
+        {
+            List<StudentEntity> actual = studentRepository.selectListByIds(ids);
+
+            Assert.assertNotNull(actual);
+            Assert.assertEquals(0, actual.size());
+        }
     }
 }

@@ -21,6 +21,13 @@ public class SelectListTask extends SelectTask {
         return selectList(selectSqlBuilder);
     }
 
+    public <TEntity> List<TEntity> selectListByPage(TEntity entity, Integer pageIndex, Integer pageSize) throws Exception {
+        SelectSqlBuilder selectSqlBuilder = buildSelectSqlBuilder(entity);
+        selectSqlBuilder.from(entityManager.getTableName());
+        selectSqlBuilder.limit(pageIndex * pageSize, pageSize);
+        return selectList(selectSqlBuilder);
+    }
+
     public <TEntity> List<TEntity> selectList(SelectSqlBuilder selectSqlBuilder) throws Exception {
         Mapper<TEntity> mapper = new EntityMapper<>(entityManager);
         return DalClientExtension.selectList(dalClient, selectSqlBuilder, mapper);
