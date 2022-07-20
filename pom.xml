@@ -6,7 +6,7 @@
 
     <groupId>com.panosen</groupId>
     <artifactId>panosen-orm-mysql</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
 
     <parent>
         <groupId>com.panosen</groupId>
@@ -14,7 +14,7 @@
         <version>1.3.0</version>
     </parent>
 
-    <name>Panosen CodeDom</name>
+    <name>Panosen Orm Mysql</name>
     <packaging>jar</packaging>
     <url>https://github.com/panosen/panosen-x-orm-mysql</url>
     <description>Panosen ORM for Mysql.</description>
