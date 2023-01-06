@@ -10,11 +10,8 @@ import java.util.Map;
 
 public abstract class SelectTask extends SingleTask {
 
-    protected final EntityManager entityManager;
-
     public SelectTask(EntityManager entityManager) throws IOException {
         super(entityManager);
-        this.entityManager = entityManager;
     }
 
     protected <TEntity> SelectSqlBuilder buildSelectSqlBuilder(TEntity entity) throws IllegalAccessException {
