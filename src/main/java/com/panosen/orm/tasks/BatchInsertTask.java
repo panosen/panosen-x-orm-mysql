@@ -1,13 +1,10 @@
 package com.panosen.orm.tasks;
 
-import com.panosen.codedom.mysql.Batch;
 import com.panosen.codedom.mysql.Parameters;
 import com.panosen.codedom.mysql.builder.BatchBuilder;
 import com.panosen.codedom.mysql.builder.BatchInsertSqlBuilder;
-import com.panosen.codedom.mysql.builder.InsertSqlBuilder;
 import com.panosen.codedom.mysql.engine.BatchInsertSqlEngine;
 import com.panosen.codedom.mysql.engine.GenerationResponse;
-import com.panosen.codedom.mysql.engine.InsertSqlEngine;
 import com.panosen.orm.EntityColumn;
 import com.panosen.orm.EntityManager;
 import com.panosen.orm.KeyHolder;

@@ -11,12 +11,12 @@ import com.panosen.orm.EntityManager;
 import java.io.IOException;
 import java.util.List;
 
-public class DeleteByIdsTask extends SingleTask {
-    public DeleteByIdsTask(EntityManager entityManager) throws IOException {
+public class DeleteByPrimaryKeysTask extends SingleTask {
+    public DeleteByPrimaryKeysTask(EntityManager entityManager) throws IOException {
         super(entityManager);
     }
 
-    public <TId> int deleteByIds(List<TId> ids) throws Exception {
+    public <TId> int deleteByPrimaryKeys(List<TId> primaryKeys) throws Exception {
         DeleteSqlBuilder deleteSqlBuilder = new DeleteSqlBuilder()
                 .from(entityManager.getTableName());
 
@@ -26,7 +26,7 @@ public class DeleteByIdsTask extends SingleTask {
         }
 
         deleteSqlBuilder.where()
-                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), Lists.newArrayList(ids));
+                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), Lists.newArrayList(primaryKeys));
 
         GenerationResponse generationResponse = new DeleteSqlEngine().generate(deleteSqlBuilder);
         String sql = generationResponse.getSql();

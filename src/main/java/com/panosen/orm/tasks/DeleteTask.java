@@ -15,7 +15,7 @@ public class DeleteTask extends SingleTask {
         super(entityManager);
     }
 
-    public <TEntity> int execute(TEntity entity) throws Exception {
+    public <TEntity> int delete(TEntity entity) throws Exception {
 
         EntityColumn primaryKeyColumn = entityManager.getPrimaryKeyColumn();
         if (primaryKeyColumn == null) {

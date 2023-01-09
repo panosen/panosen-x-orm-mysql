@@ -8,12 +8,12 @@ import com.panosen.orm.EntityManager;
 import java.io.IOException;
 import java.util.List;
 
-public class SelectListByIdsTask extends SelectListTask {
-    public SelectListByIdsTask(EntityManager entityManager) throws IOException {
+public class SelectListByPrimaryKeysTask extends SelectListTask {
+    public SelectListByPrimaryKeysTask(EntityManager entityManager) throws IOException {
         super(entityManager);
     }
 
-    public <T, TEntity> List<TEntity> selectListByIds(List<T> ids) throws Exception {
+    public <T, TEntity> List<TEntity> selectListByPrimaryKeys(List<T> primaryKeys) throws Exception {
         SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
                 .from(entityManager.getTableName());
 
@@ -23,7 +23,7 @@ public class SelectListByIdsTask extends SelectListTask {
         }
 
         selectSqlBuilder.where()
-                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), Lists.newArrayList(ids));
+                .in(primaryKeyColumn.getColumnName(), primaryKeyColumn.getType(), Lists.newArrayList(primaryKeys));
 
         return selectList(selectSqlBuilder);
     }

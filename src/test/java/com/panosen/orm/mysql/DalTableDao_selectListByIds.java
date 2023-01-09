@@ -43,7 +43,7 @@ public class DalTableDao_selectListByIds {
 
         //selectListByIds
         {
-            List<StudentEntity> actual = studentRepository.selectListByIds(ids);
+            List<StudentEntity> actual = studentRepository.selectListByPrimaryKeys(ids);
 
             Assert.assertNotNull(actual);
             Assert.assertEquals(3, actual.size());
@@ -51,13 +51,13 @@ public class DalTableDao_selectListByIds {
 
         //delete
         {
-            int count = studentRepository.deleteByIds(ids);
+            int count = studentRepository.deleteByPrimaryKeys(ids);
             Assert.assertEquals(3, count);
         }
 
         //selectListByIds
         {
-            List<StudentEntity> actual = studentRepository.selectListByIds(ids);
+            List<StudentEntity> actual = studentRepository.selectListByPrimaryKeys(ids);
 
             Assert.assertNotNull(actual);
             Assert.assertEquals(0, actual.size());

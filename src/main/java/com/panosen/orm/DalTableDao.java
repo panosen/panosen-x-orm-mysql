@@ -11,27 +11,35 @@ public class DalTableDao<TEntity> {
     private final EntityManager entityManager;
 
     private final InsertTask insertTask;
-    private final UpdateTask updateTask;
-    private final DeleteTask deleteTask;
     private final BatchInsertTask batchInsertTask;
+
+    private final UpdateTask updateTask;
+    private final BatchUpdateTask batchUpdateTask;
+
+    private final DeleteTask deleteTask;
+
     private final SelectListTask selectListTask;
     private final SelectSingleTask selectSingleTask;
     private final SelectSingleByIdTask selectSingleByIdTask;
-    private final SelectListByIdsTask selectListByIdsTask;
-    private final DeleteByIdsTask deleteByIdsTask;
+    private final SelectListByPrimaryKeysTask selectListByPrimaryKeysTask;
+    private final DeleteByPrimaryKeysTask deleteByPrimaryKeysTask;
 
     public DalTableDao(Class<? extends TEntity> clazz) throws IOException {
         this.entityManager = EntityManagerFactory.getOrCreateManager(clazz);
 
         this.insertTask = new InsertTask(entityManager);
-        this.updateTask = new UpdateTask(entityManager);
-        this.deleteTask = new DeleteTask(entityManager);
         this.batchInsertTask = new BatchInsertTask(entityManager);
+
+        this.updateTask = new UpdateTask(entityManager);
+        this.batchUpdateTask = new BatchUpdateTask(entityManager);
+
+        this.deleteTask = new DeleteTask(entityManager);
+
         this.selectListTask = new SelectListTask(entityManager);
         this.selectSingleTask = new SelectSingleTask(entityManager);
         this.selectSingleByIdTask = new SelectSingleByIdTask(entityManager);
-        this.selectListByIdsTask = new SelectListByIdsTask(entityManager);
-        this.deleteByIdsTask = new DeleteByIdsTask(entityManager);
+        this.selectListByPrimaryKeysTask = new SelectListByPrimaryKeysTask(entityManager);
+        this.deleteByPrimaryKeysTask = new DeleteByPrimaryKeysTask(entityManager);
     }
 
     public int insert(TEntity entity) throws Exception {
@@ -47,7 +55,7 @@ public class DalTableDao<TEntity> {
     }
 
     public int delete(TEntity entity) throws Exception {
-        return this.deleteTask.execute(entity);
+        return this.deleteTask.delete(entity);
     }
 
     public int batchInsert(List<TEntity> entityList) throws Exception {
@@ -58,19 +66,14 @@ public class DalTableDao<TEntity> {
         return this.batchInsertTask.batchInsert(entityList, keyHolder);
     }
 
-    //TODO add Transaction
     public int[] batchUpdate(List<TEntity> entityList) throws Exception {
-        int[] counts = new int[entityList.size()];
-        for (int index = 0, length = entityList.size(); index < length; index++) {
-            counts[index] = new UpdateTask(entityManager).execute(entityList.get(index));
-        }
-        return counts;
+        return this.batchUpdateTask.batchUpdate(entityList);
     }
 
     public int[] batchDelete(List<TEntity> entityList) throws Exception {
         int[] counts = new int[entityList.size()];
         for (int index = 0, length = entityList.size(); index < length; index++) {
-            counts[index] = new DeleteTask(entityManager).execute(entityList.get(index));
+            counts[index] = new DeleteTask(entityManager).delete(entityList.get(index));
         }
         return counts;
     }
@@ -101,11 +104,11 @@ public class DalTableDao<TEntity> {
         return selectSingleByIdTask.selectSingleById(id);
     }
 
-    public <TId> List<TEntity> selectListByIds(List<TId> ids) throws Exception {
-        return selectListByIdsTask.selectListByIds(ids);
+    public <TId> List<TEntity> selectListByPrimaryKeys(List<TId> ids) throws Exception {
+        return selectListByPrimaryKeysTask.selectListByPrimaryKeys(ids);
     }
 
-    public <TId> int deleteByIds(List<TId> ids) throws Exception {
-        return deleteByIdsTask.deleteByIds(ids);
+    public <TId> int deleteByPrimaryKeys(List<TId> ids) throws Exception {
+        return deleteByPrimaryKeysTask.deleteByPrimaryKeys(ids);
     }
 }
