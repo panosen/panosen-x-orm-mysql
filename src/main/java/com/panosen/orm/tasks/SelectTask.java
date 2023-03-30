@@ -1,7 +1,7 @@
 package com.panosen.orm.tasks;
 
+import com.panosen.codedom.mysql.builder.ConditionsBuilder;
 import com.panosen.codedom.mysql.builder.SelectSqlBuilder;
-import com.panosen.codedom.mysql.builder.WhereBuilder;
 import com.panosen.orm.EntityColumn;
 import com.panosen.orm.EntityManager;
 
@@ -22,7 +22,7 @@ public abstract class SelectTask extends SingleTask {
             return selectSqlBuilder;
         }
 
-        WhereBuilder whereBuilder = selectSqlBuilder.where();
+        ConditionsBuilder whereBuilder = selectSqlBuilder.where();
         for (Map.Entry<String, EntityColumn> entry : entityManager.getColumnMap().entrySet()) {
             Object value = entry.getValue().getField().get(entity);
             if (value == null) {

@@ -1,9 +1,9 @@
 package com.panosen.orm.tasks;
 
 import com.panosen.codedom.mysql.Parameters;
+import com.panosen.codedom.mysql.builder.ConditionsBuilder;
 import com.panosen.codedom.mysql.builder.StatementsBuilder;
 import com.panosen.codedom.mysql.builder.UpdateSqlBuilder;
-import com.panosen.codedom.mysql.builder.WhereBuilder;
 import com.panosen.codedom.mysql.engine.GenerationResponse;
 import com.panosen.codedom.mysql.engine.UpdateSqlEngine;
 import com.panosen.orm.DalClient;
@@ -34,7 +34,7 @@ public class UpdateHelper {
                 .table(entityManager.getTableName());
 
         StatementsBuilder setBuilder = updateSqlBuilder.set();
-        WhereBuilder whereBuilder = updateSqlBuilder.where();
+        ConditionsBuilder whereBuilder = updateSqlBuilder.where();
         for (Map.Entry<String, EntityColumn> entry : entityManager.getColumnMap().entrySet()) {
             Object value = entry.getValue().getField().get(entity);
             if (value == null) {
