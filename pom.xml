@@ -6,7 +6,7 @@
 
     <groupId>com.panosen</groupId>
     <artifactId>panosen-orm-mysql</artifactId>
-    <version>0.4.4</version>
+    <version>0.4.5</version>
 
     <parent>
         <groupId>com.panosen</groupId>
@@ -31,7 +31,7 @@
             <dependency>
                 <groupId>com.panosen</groupId>
                 <artifactId>super-version</artifactId>
-                <version>1.6.0</version>
+                <version>1.6.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -77,9 +77,11 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
+            <version>9.0.75</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.panosen/panosen-codedom-mysql -->
