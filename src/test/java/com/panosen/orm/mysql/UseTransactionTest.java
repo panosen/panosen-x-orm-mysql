@@ -19,7 +19,7 @@ public class UseTransactionTest {
     }
 
     @Test
-    public void test() throws Throwable {
+    public void test() throws Exception {
 
         DalClient dalClient = DalClientFactory.getClient(DBNameConst.school);
         if (dalClient == null) {

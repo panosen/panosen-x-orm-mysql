@@ -24,15 +24,15 @@ public class DalClient {
         return doInConnection(new ExecuteUpdate(sql, parameters, keyHolder));
     }
 
-    public int[] batchUpdate(String[] sqls) throws Throwable {
+    public int[] batchUpdate(String[] sqls) throws Exception {
         return doInTransaction(new ExecuteBatchSqls(sqls));
     }
 
-    public int[] batchUpdate(String sql, Parameters[] parametersList) throws Throwable {
+    public int[] batchUpdate(String sql, Parameters[] parametersList) throws Exception {
         return doInTransaction(new ExecuteBatchParams(sql, parametersList));
     }
 
-    public void execute(ExecuteCommand.Command command) throws Throwable {
+    public void execute(ExecuteCommand.Command command) throws Exception {
         doInTransaction(new ExecuteCommand(command));
     }
 
@@ -51,7 +51,7 @@ public class DalClient {
             connection.close();
 
             return result;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             connection.rollback();
             connection.setAutoCommit(true);
             connection.close();
