@@ -6,8 +6,10 @@ import com.panosen.orm.EntityManager;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Map;
 
 public class EntityMapper<TEntity> implements Mapper<TEntity> {
@@ -21,7 +23,14 @@ public class EntityMapper<TEntity> implements Mapper<TEntity> {
     @Override
     public TEntity map(ResultSet resultSet) throws SQLException, ReflectiveOperationException {
         Object entity = entityManager.createInstance();
+
+        HashSet<String> columnNames = buildColumnNames(resultSet);
+
         for (Map.Entry<String, EntityColumn> entry : entityManager.getColumnMap().entrySet()) {
+            if (!columnNames.contains(entry.getKey().toLowerCase())) {
+                continue;
+            }
+
             Field field = entry.getValue().getField();
 
             setValue(field, entity, resultSet, entry.getKey());
@@ -31,8 +40,19 @@ public class EntityMapper<TEntity> implements Mapper<TEntity> {
         return (TEntity) entity;
     }
 
+    private HashSet<String> buildColumnNames(ResultSet resultSet) throws SQLException {
+        HashSet<String> hashSet = new HashSet<>();
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columns = rsmd.getColumnCount();
+        for (int index = 1; index <= columns; index++) {
+            hashSet.add(rsmd.getColumnName(index).toLowerCase());
+        }
+        return hashSet;
+    }
+
     private void setValue(Field field, Object entity, ResultSet resultSet, String columnName)
             throws ReflectiveOperationException, SQLException {
+
         Object value = resultSet.getObject(columnName);
 
         if (value == null) {
