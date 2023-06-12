@@ -8,14 +8,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class DataSourceLocator {
-    public static DataSource getDataSource(String logicDbName) throws IOException {
+    public static DataSource getDataSource(String logicDbName, Properties extraProperties) throws IOException {
         PropertiesLoader propertiesLoader = new PropertiesLoader();
 
         Properties builtInProperties = PropertiesLoader.loadBuiltInProperties();
-        Properties properties = propertiesLoader.loadDataSourceProperties();
-        Properties dataSourceProperties = propertiesLoader.loadDataSourceProperties(logicDbName);
+        Properties projectProperties = propertiesLoader.loadDataSourceProperties();
+        Properties databaseProperties = propertiesLoader.loadDataSourceProperties(logicDbName);
 
-        PoolConfiguration poolConfiguration = DataSourceFactory.parsePoolProperties(combine(builtInProperties, properties, dataSourceProperties));
+        PoolConfiguration poolConfiguration = DataSourceFactory.parsePoolProperties(combine(builtInProperties, projectProperties, databaseProperties, extraProperties));
 
         return new DataSource(poolConfiguration);
     }
