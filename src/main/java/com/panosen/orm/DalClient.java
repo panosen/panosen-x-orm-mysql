@@ -55,7 +55,7 @@ public class DalClient {
             connection.rollback();
             connection.setAutoCommit(true);
             connection.close();
-            return null;
+            throw e;
         }
     }
 

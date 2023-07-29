@@ -28,7 +28,10 @@ public class UseTransactionTest {
 
         dalClient.execute(this::insertSuccess);
 
-        dalClient.execute(this::insertThenFail);
+        try {
+            dalClient.execute(this::insertThenFail);
+        } catch (Exception e) {
+        }
 
         SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder();
 
