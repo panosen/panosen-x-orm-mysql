@@ -24,6 +24,10 @@ public class BatchInsertTask extends SingleTask {
     }
 
     public <TEntity> int batchInsert(List<TEntity> entityList, KeyHolder keyHolder) throws Exception {
+        if (entityList == null || entityList.isEmpty()) {
+            return 0;
+        }
+
         BatchInsertSqlBuilder batchInsertSqlBuilder = new BatchInsertSqlBuilder()
                 .intoTable(entityManager.getTableName());
 
