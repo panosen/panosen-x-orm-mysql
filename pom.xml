@@ -6,7 +6,7 @@
 
     <groupId>com.panosen</groupId>
     <artifactId>panosen-orm-mysql</artifactId>
-    <version>0.4.11</version>
+    <version>0.4.12</version>
 
     <parent>
         <groupId>com.panosen</groupId>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.panosen</groupId>
             <artifactId>panosen-codedom-mysql</artifactId>
-            <version>0.6.3</version>
+            <version>0.6.4</version>
         </dependency>
 
     </dependencies>
