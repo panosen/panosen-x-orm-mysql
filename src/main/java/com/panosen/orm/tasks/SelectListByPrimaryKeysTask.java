@@ -14,8 +14,8 @@ public class SelectListByPrimaryKeysTask extends SelectListTask {
     }
 
     public <T, TEntity> List<TEntity> selectListByPrimaryKeys(List<T> primaryKeys) throws Exception {
-        SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
-                .from(entityManager.getTableName());
+        SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder();
+        selectSqlBuilder.from(entityManager.getTableName());
 
         EntityColumn primaryKeyColumn = entityManager.getPrimaryKeyColumn();
         if (primaryKeyColumn == null) {

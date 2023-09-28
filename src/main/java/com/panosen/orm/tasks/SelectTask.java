@@ -15,8 +15,8 @@ public abstract class SelectTask extends SingleTask {
     }
 
     protected <TEntity> SelectSqlBuilder buildSelectSqlBuilder(TEntity entity) throws IllegalAccessException {
-        SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
-                .from(entityManager.getTableName());
+        SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder();
+        selectSqlBuilder.from(entityManager.getTableName());
 
         if (entity == null) {
             return selectSqlBuilder;

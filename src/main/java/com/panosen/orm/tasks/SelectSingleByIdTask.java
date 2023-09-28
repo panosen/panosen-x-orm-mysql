@@ -13,9 +13,9 @@ public class SelectSingleByIdTask extends SelectSingleTask {
     }
 
     public <TEntity> TEntity selectSingleById(Object id) throws Exception {
-        SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder()
-                .from(entityManager.getTableName())
-                .limit(1);
+        SelectSqlBuilder selectSqlBuilder = new SelectSqlBuilder();
+        selectSqlBuilder.from(entityManager.getTableName());
+        selectSqlBuilder.limit(1);
 
         EntityColumn primaryKeyColumn = entityManager.getPrimaryKeyColumn();
         if (primaryKeyColumn == null) {

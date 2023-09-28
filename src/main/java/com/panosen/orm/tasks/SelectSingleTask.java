@@ -16,9 +16,8 @@ public class SelectSingleTask extends SelectTask {
     public <TEntity> TEntity selectSingle(TEntity entity) throws Exception {
         SelectSqlBuilder selectSqlBuilder = buildSelectSqlBuilder(entity);
 
-        selectSqlBuilder
-                .from(entityManager.getTableName())
-                .limit(1);
+        selectSqlBuilder.from(entityManager.getTableName());
+        selectSqlBuilder.limit(1);
 
         return selectSingle(selectSqlBuilder);
     }
