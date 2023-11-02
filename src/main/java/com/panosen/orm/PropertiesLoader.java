@@ -35,6 +35,9 @@ public class PropertiesLoader {
     public Properties loadDataSourceProperties(String logicDbName) throws IOException {
         String fileName = "/datasources/datasource-" + logicDbName + ".properties";
         InputStream inputStream = this.getClass().getResourceAsStream(fileName);
+        if (inputStream == null) {
+            return new Properties();
+        }
         Properties properties = new Properties();
         properties.load(inputStream);
         return properties;
