@@ -1,5 +1,6 @@
 package com.panosen.orm;
 
+import com.panosen.codedom.mysql.Parameter;
 import com.panosen.codedom.mysql.Parameters;
 import com.panosen.codedom.mysql.builder.SelectSqlBuilder;
 import com.panosen.codedom.mysql.engine.GenerationResponse;
@@ -36,6 +37,9 @@ public class DalClientExtension {
 
         Parameters parameters = generationResponse.getParameters();
         logger.info("parameters.size() = " + parameters.size());
+        for (Parameter parameter : parameters) {
+            logger.info(parameter.getValue().toString());
+        }
 
         final EntityExtractor<TEntity> extractor = new EntityExtractor<>(mapper);
 
