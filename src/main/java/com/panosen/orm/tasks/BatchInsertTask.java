@@ -1,5 +1,6 @@
 package com.panosen.orm.tasks;
 
+import com.panosen.codedom.mysql.Parameter;
 import com.panosen.codedom.mysql.Parameters;
 import com.panosen.codedom.mysql.builder.BatchBuilder;
 import com.panosen.codedom.mysql.builder.BatchInsertSqlBuilder;
@@ -50,6 +51,9 @@ public class BatchInsertTask extends SingleTask {
 
         Parameters parameters = generationResponse.getParameters();
         logger.info("parameters.size() = " + parameters.size());
+        for (Parameter parameter : parameters) {
+            logger.info(parameter.getValue().toString());
+        }
 
         return dalClient.update(sql, parameters, keyHolder);
     }

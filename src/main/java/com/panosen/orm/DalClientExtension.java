@@ -24,6 +24,9 @@ public class DalClientExtension {
 
         Parameters parameters = generationResponse.getParameters();
         logger.info("parameters.size() = " + parameters.size());
+        for (Parameter parameter : parameters) {
+            logger.info(parameter.getValue().toString());
+        }
 
         final EntityListExtractor<TEntity> extractor = new EntityListExtractor<>(mapper);
 
